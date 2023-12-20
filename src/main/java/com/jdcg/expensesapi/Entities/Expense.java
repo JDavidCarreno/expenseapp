@@ -7,9 +7,11 @@ import lombok.Setter;
 public class Expense {
     private static Integer id_counter = 0;
     @Getter
-    private final Integer id;
+    @Setter
+    private Integer id;
     @Getter
     private Double amount;
+    @Setter
     private Integer expenseCategoryId;
     @Getter
     @Setter

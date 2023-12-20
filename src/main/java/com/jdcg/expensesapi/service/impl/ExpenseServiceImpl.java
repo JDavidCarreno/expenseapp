@@ -6,6 +6,8 @@ import com.jdcg.expensesapi.dto.request.ExpenseRequestDto;
 import com.jdcg.expensesapi.service.ExpenseService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
 
@@ -24,6 +26,11 @@ public class ExpenseServiceImpl implements ExpenseService {
             System.out.println("No se insertó ningun registro");
         }
         return response;
+    }
+
+    @Override
+    public List<Expense> getAllExpenses() {
+        return expenseRepository.getAll();
     }
 
     private Expense mapDtoToExpense(ExpenseRequestDto expenseRequestDto){

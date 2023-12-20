@@ -20,6 +20,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     private static final String INSERT_INTO_CATEGORY_EXPENSE = "INSERT INTO expensecategory (name) VALUES (?)";
     private static final String SELECT_FROM_EXPENSE_CATEGORY_BY_NAME = "SELECT * FROM expensecategory WHERE name = ?";
     private static final String INSERT_INTO_EXPENSE = "INSERT INTO Expense (amount, category_id, category_name, date) VALUES (?, ?, ?, ?)";
+    private static final String SELEC_ALL_FROM_EXPENSE = "SELECT * FROM Expense";
     private final JdbcTemplate jdbcTemplate;
 
     public ExpenseRepositoryImpl(JdbcTemplate jdbcTemplate) {
@@ -39,6 +40,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
         return jdbcTemplate.update(INSERT_INTO_EXPENSE, expense.getAmount(), expenseCategory.getId(), expenseCategory.getName(), expense.getDate());
     }
 
+
     static class ExpenseCategoryRowMapper implements RowMapper<ExpenseCategory> {
         @Override
         public ExpenseCategory mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -46,6 +48,25 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
             expenseCategory.setId(rs.getInt("id"));
             expenseCategory.setName(rs.getString("name"));
             return expenseCategory;
+        }
+    }
+
+    @Override
+    public List<Expense> getAll() {
+        List<Expense> list = jdbcTemplate.query(SELEC_ALL_FROM_EXPENSE, new ExpenseRowMapper());
+        return list;
+    }
+
+    static class ExpenseRowMapper implements RowMapper<Expense>{
+        @Override
+        public Expense mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Expense expense = new Expense();
+            expense.setId(rs.getInt("id"));
+            expense.setAmount(rs.getDouble("amount"));
+            expense.setCategoryName(rs.getString("category_name"));
+            expense.setExpenseCategoryId(rs.getInt("category_id"));
+            expense.setDate(rs.getString("date"));
+            return expense;
         }
     }
 
