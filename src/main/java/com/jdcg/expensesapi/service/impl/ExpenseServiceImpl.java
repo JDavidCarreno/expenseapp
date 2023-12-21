@@ -33,6 +33,11 @@ public class ExpenseServiceImpl implements ExpenseService {
         return expenseRepository.getAll();
     }
 
+    @Override
+    public Expense getExpenseById(Integer id) {
+        return expenseRepository.getExpenseById(id);
+    }
+
     private Expense mapDtoToExpense(ExpenseRequestDto expenseRequestDto){
         Expense expense = new Expense();
         expense.setAmount(expenseRequestDto.getAmount());

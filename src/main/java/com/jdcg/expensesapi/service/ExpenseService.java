@@ -8,4 +8,5 @@ import java.util.List;
 public interface ExpenseService {
     String createExpense(ExpenseRequestDto expenseRequestDto);
     List<Expense> getAllExpenses();
+    Expense getExpenseById(Integer id);
 }

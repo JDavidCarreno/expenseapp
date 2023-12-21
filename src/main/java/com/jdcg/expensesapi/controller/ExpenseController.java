@@ -28,4 +28,15 @@ public class ExpenseController {
     public ResponseEntity<List<Expense>> getAllExpensesHandler(){
         return ResponseEntity.status(HttpStatus.OK).body(expenseService.getAllExpenses());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Expense> getExpenseById(@PathVariable String id) {
+        try {
+            Integer idInteger = Integer.parseInt(id);
+            return ResponseEntity.status(HttpStatus.OK).body(expenseService.getExpenseById(idInteger));
+        } catch (NumberFormatException e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
 }

@@ -21,6 +21,8 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     private static final String SELECT_FROM_EXPENSE_CATEGORY_BY_NAME = "SELECT * FROM expensecategory WHERE name = ?";
     private static final String INSERT_INTO_EXPENSE = "INSERT INTO Expense (amount, category_id, category_name, date) VALUES (?, ?, ?, ?)";
     private static final String SELEC_ALL_FROM_EXPENSE = "SELECT * FROM Expense";
+
+    private static final String SELEC_EXPENSE_BY_NAME = "SELECT * FROM Expense WHERE id = ?";
     private final JdbcTemplate jdbcTemplate;
 
     public ExpenseRepositoryImpl(JdbcTemplate jdbcTemplate) {
@@ -39,6 +41,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
         assert expenseCategory != null;
         return jdbcTemplate.update(INSERT_INTO_EXPENSE, expense.getAmount(), expenseCategory.getId(), expenseCategory.getName(), expense.getDate());
     }
+
 
 
     static class ExpenseCategoryRowMapper implements RowMapper<ExpenseCategory> {
@@ -68,6 +71,11 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
             expense.setDate(rs.getString("date"));
             return expense;
         }
+    }
+
+    @Override
+    public Expense getExpenseById(Integer id) {
+        return jdbcTemplate.queryForObject(SELEC_EXPENSE_BY_NAME, new ExpenseRowMapper(), id);
     }
 
 /*    @Override
